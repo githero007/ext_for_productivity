@@ -1,0 +1,41 @@
+    {
+        "manifest_version": 3,
+        "name": "Productivity extension",
+        "description": "Extension that focuses on improving your productivity",
+        "version": "1.0",
+        "action": {
+            "default_popup": "index.html"
+        },
+        "host_permissions": [
+            "https://*.facebook.com/*",
+            "https://*.tiktok.com/*",
+            "https://instagram.com/*",
+            "https://*.youtube.com/*",
+            "https://*.twitter.com/*",
+            "https://*.x.com/*",
+            "https://*.discord.com/*",
+            "https://*.discordapp.com/*",
+            "https://*.skype.com/*",
+            "https://*.snapchat.com/*",
+            "https://*.reddit.com/*",
+            "https://*.linkedin.com/*",
+            "https://*.pinterest.com/*"
+        ],
+        "permissions": [
+            "storage",
+            "scripting",
+            "tabs"
+        ],
+        "web_accessible_resources": [
+            {
+                "resources": [
+                    "index.html",
+                    "static/js/*.js",
+                    "static/css/*.css"
+                ],
+                "matches": [
+                    "<all_urls>"
+                ]
+            }
+        ]
+    }
