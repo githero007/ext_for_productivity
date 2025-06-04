@@ -3,7 +3,15 @@ import { PieChart, Pie, Sector, Cell } from "recharts";
 function Piecharts() {
     const [web, setWeb] = useState([]);
     const [text, setText] = useState('');
-
+    useEffect(() => {
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            if (tabs.length > 0) {
+                const currentTabUrl = tabs[0].url;
+                console.log("Current tab URL:", currentTabUrl);
+                setText(currentTabUrl);
+            }
+        });
+    }, [])
 
     const data = [
         { name: "Group A", value: 400 },
