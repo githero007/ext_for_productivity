@@ -48,6 +48,10 @@
             "scripting",
             "tabs"
         ],
+        "background": {
+            "service_worker": "service_worker.js",
+            "type": "module"
+        },
         "web_accessible_resources": [
             {
                 "resources": [

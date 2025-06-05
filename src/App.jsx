@@ -13,7 +13,7 @@ function App() {
           <Goal />
         </div>
         <div className="flex justify-center items-center text-center border border-white rounded-xl p-6 md:p-8">
-          <Piecharts />
+          {/* <Piecharts /> */}
         </div>
         <div className="col-span-1 md:col-span-2 flex justify-center items-center text-center border border-white rounded-xl p-4">
           <WebBlocker />
