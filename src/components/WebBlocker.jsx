@@ -8,8 +8,8 @@ import { formLabelClasses } from "@mui/material";
 
 function WebBlocker() {
     const [block, setBlock] = useState({
-        "Social Media": true,
-        "Youtube": false,
+        "Social Media": false,
+        "Youtube": true,
         "BrainRot": true
     })
     const handleChange = (label) => {
@@ -19,7 +19,17 @@ function WebBlocker() {
             [name]: !label[1],
         }
         setBlock(updatedSite);
-        //because i am changing the entire content of the website i need to send the listening to the current tab which is active
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            if (tabs.length === 0) return; // no active tab
+
+            chrome.tabs.sendMessage(tabs[0].id, { updatedSite }, function (response) {
+                if (chrome.runtime.lastError) {
+                    console.error("Message failed:", chrome.runtime.lastError.message);
+                } else {
+                    console.log("Response from content script:", response);
+                }
+            });
+        });
     }
     return (<>
 
