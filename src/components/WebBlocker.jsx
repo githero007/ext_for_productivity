@@ -8,10 +8,11 @@ import { formLabelClasses } from "@mui/material";
 
 function WebBlocker() {
     const [block, setBlock] = useState({
-        "Social Media": false,
+        "Social Media": true,
         "Youtube": true,
         "BrainRot": true
     })
+    const [custom, setCustom] = useState([]);
     const handleChange = (label) => {
         let name = label[0];
         const updatedSite = {
@@ -19,6 +20,9 @@ function WebBlocker() {
             [name]: !label[1],
         }
         setBlock(updatedSite);
+        chrome.storage.local.get(["blockedSites"], (result) => {
+            if (result.blockedSites != null) setBlock(result.blockedSites);
+        })
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             if (tabs.length === 0) return; // no active tab
 
@@ -47,8 +51,8 @@ function WebBlocker() {
 
                 )
             })}
-
         </FormGroup>
+        <button onClick={handleAdd}>Add Custom Urls</button>
     </>)
 }
 export default WebBlocker;
