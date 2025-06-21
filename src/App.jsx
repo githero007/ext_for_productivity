@@ -1,6 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import Piecharts from './components/Piecharts.jsx';
+import Clock from './components/Clock.jsx';
 import Goal from './components/Goal.jsx';
 import WebBlocker from './components/WebBlocker.jsx';
 
@@ -20,10 +20,10 @@ function App() {
           <Goal />
         </div>
         <div className="border border-white rounded-xl p-4 text-center">
-          {/* <Piecharts /> */}
+          <Clock />
         </div>
         <div className="border border-white rounded-xl p-4 text-center">
-          <WebBlocker />
+          {/* <WebBlocker /> */}
         </div>
       </div>
     </div>
