@@ -1,33 +1,52 @@
 let blockedSites = {
-    "Social Media": false,
+    "Social Media": true,
     "Youtube": false,
     "BrainRot": false
 };
+let customWeb = []
 let flag = 0;
 let currentURL = "";
 
 
-chrome.storage.local.get(["blockedSites"], (result) => {
+chrome.storage.local.get(["blockedSites", "customWeb"], (result) => {
     blockedSites = result.blockedSites || blockedSites;
-    console.log("Loaded blockedSites on page load:", blockedSites);
+    customWeb = result.customWeb || customWeb;
     ans();
 });
 
-// Listen for messages from popup / background
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    blockedSites = request.updatedSite;
-    chrome.storage.local.set({ blockedSites }); // Persist the new settings
 
-    sendResponse({ reply: "Updated block settings", newSites: blockedSites });
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+
+    if (request.updatedSite) { blockedSites = request.updatedSite; }
+    if (request.customSite) {
+        let input = request.customSite;
+        // Add protocol if missing
+        let host = [];
+        input = input;
+        for (let i = 0; i < input.length; i++) {
+            let url = input[i].toString();
+            if (url.startsWith("http://") && !url.startsWith("https://")) {
+                url = "http://" + input[i];
+            }
+            console.log(url);
+            host.push(url);
+        }
+        customWeb = host;
+        chrome.storage.local.set({ customWeb: customWeb });
+    }
+    chrome.storage.local.set({ blockedSites: blockedSites });
+    console.log(blockedSites);
+    sendResponse({ newSites: blockedSites });
 
     if (currentURL !== "") {
         flag = 1;
         ans();
     }
-    return true; // To indicate async response
+    return true;
 });
 
-// Get the current tab URL
+
 chrome.runtime.sendMessage({ type: "getTabInfo" }, (response) => {
     if (response?.error) {
         console.error("Error getting tab info:", response.error);
@@ -38,7 +57,7 @@ chrome.runtime.sendMessage({ type: "getTabInfo" }, (response) => {
     }
 });
 
-// Helper collections
+
 const socialMedia = [
     "facebook.com",
     "tiktok.com",
@@ -63,13 +82,11 @@ const brainRot = [
     "instagram.com/reels"
 ];
 
-// Matching function
 function matches(url, collections) {
-    const hostname = new URL(url).hostname;
-    return collections.some(domain => hostname.includes(domain));
+    console.log('matching at custom site', url);
+    return collections.some(domain => url.includes(domain));
 }
 
-// The main logic
 const ans = () => {
     if (!currentURL) return;
 
@@ -77,18 +94,17 @@ const ans = () => {
     const blockSocial = blockedSites["Social Media"] && matches(url, socialMedia);
     const blockYoutube = blockedSites["Youtube"] && matches(url, youTube);
     const blockBrainRot = blockedSites["BrainRot"] && matches(url, brainRot);
+    const blockCustom = matches(url, customWeb);
 
-    if (blockSocial || blockYoutube || blockBrainRot) {
-        if (!document.querySelector("iframe.blocker-iframe")) {
-            document.body.innerHTML = `
+    if (blockSocial || blockYoutube || blockBrainRot || blockCustom) {
+        document.body.innerHTML = `
                 <iframe class="blocker-iframe" src="${chrome.runtime.getURL("index.html")}" frameborder="0" 
                 style="width:100vw; height:100vh; border:none;"></iframe>`;
-            flag = 1;
-        }
+        flag = 1;
+
     } else {
         if (flag === 1) {
-            console.log("Unblocking, reloading original page...");
-            location.reload(); // Reload to restore site content
+            location.reload();
             flag = 0;
         }
     }
