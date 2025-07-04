@@ -1,15 +1,13 @@
 import React, { useState, useRef } from "react";
 function Clock() {
     const [time, setTime] = useState(30);
-    const [seconds, setSeconds] = useState(60);
+    const [seconds, setSeconds] = useState(0);
     const [button, setButton] = useState('start');
     const [active, setActive] = useState(false);
     const handleTime = () => {
         setButton('stop');
-        let remaining = time;
+        setTime((time) => time - 1);
         const current = new Date();
-        let hours = current.getHours();
-        let minutes = current.getMinutes();
         if (button == 'stop') {
             alert('session started cannot be stopped');
             return;
@@ -18,13 +16,14 @@ function Clock() {
             console.log(time);
             setSeconds((prevSeconds) => {
                 if (prevSeconds > 0) return prevSeconds - 1;
-                else if (time == 0) return 0;
+                else if (time == 0) return 59;
                 else return 60;
             })
         }, 1 * 1000);
-        setInterval(() => {
+        setInterval((e) => {
             setTime((prevTime) => {
                 if (prevTime > 0) return prevTime - 1;
+                else if (time == 0) return 0;
                 else return 0;
             })
         }, 60 * 1000);

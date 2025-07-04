@@ -81,21 +81,42 @@ const brainRot = [
     "youtube.com/shorts",
     "instagram.com/reels"
 ];
+function subDomainMatch(sites, url) {
+    let backSlashCount = 0;
+    let count = 0;
+    let burnerString = '';
+    let burnerString2 = '';
+    let len = Math.max(url.length, sites.length);
+    for (let i = 0; i < len; i++) {
+        burnerString += url[i];
+        burnerString2 += sites[i];
+        if (url[i] == `/`) backSlashCount++;
+        if (backSlashCount >= 4) break;
+    }
+    if (burnerString == burnerString2) return true;
+    return false;
+}
 
 function matches(url, collections) {
     console.log('matching at custom site', url);
     return collections.some(domain => url.includes(domain));
 }
+function customMatches(url, customWeb) {
+    for (let sites of customWeb) {
+        console.log("this is the custom sites");
+        subDomainMatch(sites, url);
+    }
+}
 
 const ans = () => {
     if (!currentURL) return;
-
+    const blockCustom = customMatches(url, customWeb)
     const url = currentURL;
     const blockSocial = blockedSites["Social Media"] && matches(url, socialMedia);
     const blockYoutube = blockedSites["Youtube"] && matches(url, youTube);
     const blockBrainRot = blockedSites["BrainRot"] && matches(url, brainRot);
-    const blockCustom = matches(url, customWeb);
-
+    ;
+    console.log(blockCustom, 'is blocked');
     if (blockSocial || blockYoutube || blockBrainRot || blockCustom) {
         document.body.innerHTML = `
                 <iframe class="blocker-iframe" src="${chrome.runtime.getURL("index.html")}" frameborder="0" 
