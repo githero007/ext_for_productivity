@@ -16,8 +16,7 @@ function Clock() {
             console.log(time);
             setSeconds((prevSeconds) => {
                 if (prevSeconds > 0) return prevSeconds - 1;
-                else if (time == 0) return 59;
-                else return 60;
+                else return 59;
             })
         }, 1 * 1000);
         setInterval((e) => {

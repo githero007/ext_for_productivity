@@ -79,7 +79,24 @@ const youTube = [
 
 const brainRot = [
     "youtube.com/shorts",
-    "instagram.com/reels"
+    "instagram.com/reels",
+
+    // Common adult sites (add as needed)
+    "pornhub.com",
+    "xvideos.com",
+    "xhamster.com",
+    "redtube.com",
+    "youjizz.com",
+    "tube8.com",
+    "youporn.com",
+    "xnxx.com",
+    "spankwire.com",
+    "porn.com",
+    "brazzers.com",
+    "adultfriendfinder.com",
+    "beeg.com",
+    "tnaflix.com",
+    "porndig.com"
 ];
 function subDomainMatch(sites, url) {
     let backSlashCount = 0;
@@ -103,14 +120,15 @@ function matches(url, collections) {
 }
 function customMatches(url, customWeb) {
     for (let sites of customWeb) {
-        console.log("this is the custom sites");
-        subDomainMatch(sites, url);
+        if (subDomainMatch(sites, url)) return true;
     }
+    return false;
 }
 
 const ans = () => {
     if (!currentURL) return;
     const url = currentURL;
+    console.log('this is changed url', url);
     const blockCustom = customMatches(url, customWeb)
 
     const blockSocial = blockedSites["Social Media"] && matches(url, socialMedia);
@@ -131,3 +149,37 @@ const ans = () => {
         }
     }
 };
+(function () {
+    let lastUrl = location.href;
+
+    function detectUrlChange() {
+        if (location.href !== lastUrl) {
+            lastUrl = location.href;
+            console.log("URL changed to:", lastUrl);
+            currentURL = lastUrl;
+            ans();  // Call your blocking logic here
+        }
+    }
+
+
+    const pushState = history.pushState;
+    history.pushState = function () {
+        pushState.apply(history, arguments);
+        detectUrlChange();
+        ans();
+    };
+
+
+    const replaceState = history.replaceState;
+    history.replaceState = function () {
+        replaceState.apply(history, arguments);
+        detectUrlChange();
+        ans();
+    };
+
+    // Listen to back/forward navigation
+    window.addEventListener('popstate', detectUrlChange);
+
+    new MutationObserver(detectUrlChange).observe(document, { subtree: true, childList: true });
+})();
+
