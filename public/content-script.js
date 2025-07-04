@@ -110,8 +110,9 @@ function customMatches(url, customWeb) {
 
 const ans = () => {
     if (!currentURL) return;
-    const blockCustom = customMatches(url, customWeb)
     const url = currentURL;
+    const blockCustom = customMatches(url, customWeb)
+
     const blockSocial = blockedSites["Social Media"] && matches(url, socialMedia);
     const blockYoutube = blockedSites["Youtube"] && matches(url, youTube);
     const blockBrainRot = blockedSites["BrainRot"] && matches(url, brainRot);

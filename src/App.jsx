@@ -23,7 +23,7 @@ function App() {
           <Clock />
         </div>
         <div className="border border-white rounded-xl p-4 text-center">
-          {/* <WebBlocker /> */}
+          <WebBlocker />
         </div>
       </div>
     </div>
