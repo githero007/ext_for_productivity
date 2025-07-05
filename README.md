@@ -28,7 +28,7 @@ This is a lightweight open-source Chrome extension that helps you stay focused b
 
 ### 1. Clone the repository
 
-```bash
+```
 git clone https://github.com/githero007/ext_for_productivity.git
 cd ext_for_productivity
 2. Install dependencies
@@ -66,9 +66,6 @@ npm run build
 This will output the production-ready extension into the dist/ folder.
 
 📁 Folder Structure
-arduino
-Copy
-Edit
 ext_for_productivity/
 ├── public/
 │   └── index.html
