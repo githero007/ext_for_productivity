@@ -100,7 +100,7 @@ function WebBlocker() {
                     />
                 ))}
             </FormGroup>
-
+            <p>Add home url to block entire content and add  specific url to block specific content</p>
             <div className="flex gap-2">
                 <input
                     type="text"
@@ -109,10 +109,12 @@ function WebBlocker() {
                     placeholder="Enter your URL"
                     className="flex-1 border rounded-lg px-2 py-1 text-sm"
                 />
+
                 <button
                     onClick={handleAdd}
                     className="bg-blue-500 text-white text-sm px-3 py-1 rounded-lg hover:bg-blue-600"
                 >
+
                     Add URL
                 </button>
             </div>
