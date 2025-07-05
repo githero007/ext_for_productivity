@@ -14,8 +14,12 @@ function App() {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-gray-900 text-white p-4 ${isPopup ? 'min-w-[360px] max-w-[480px] flex justify-center items-center' : ''}`}>
-      <div className={`flex flex-col gap-4 w-full rounded-xl p-4 border border-white/50 ${isPopup ? '' : 'max-w-4xl mx-auto'}`}>
+    <div className={`min-h-screen bg-gray-900 text-white p-4 flex justify-center items-center`}>
+      <div
+        className={`flex flex-col gap-4 w-full rounded-xl p-4 border border-white/50
+          ${isPopup ? 'max-w-[480px] min-w-[360px]' : 'max-w-4xl'}
+        `}
+      >
         <div className="border border-white rounded-xl p-4 text-center">
           <Goal />
         </div>
